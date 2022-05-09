@@ -1,6 +1,5 @@
 from django.http import HttpResponse
 from food.models import Food
-import json
 
 def index(request):
     salad = 'salad'
