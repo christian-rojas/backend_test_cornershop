@@ -19,4 +19,6 @@ from .utils.healthz import healthz
 urlpatterns = [
     path("healthz", healthz, name="healthz"),
     path('food', include('food.urls')),
+    path('nora', include('nora.urls')),
+    # path('auth', include('auth.urls')),
 ]

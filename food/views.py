@@ -1,7 +1,7 @@
 from tempfile import template
 from django.http import HttpResponse
 from food.models import Food
-
+from django.contrib.auth.models import User
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
@@ -24,14 +24,16 @@ class editMenu(UpdateView):
     template_name = 'food/create_menu.html'
     succes_url = reverse_lazy('/')
 
-# def index(request):
-#     salad = 'salad'
-#     entrance = 'entrance'
-#     desert = 'desert'
-#     user = Food(1, salad, entrance, desert)
-#     user.save()
-#     items = Food.objects.all()
-#     return HttpResponse(items.values())
+def index(request):
+    # salad = 'salad'
+    # entrance = 'entrance'
+    # desert = 'desert'
+    # user = Food(1, salad, entrance, desert)
+    # user.save()
+    # items = Food.objects.all()
+    # User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    u = User.objects.get(username='john')
+    return HttpResponse(u.is_superuser)
 
 # def post(request):
 #     # username = request.POST.get('')

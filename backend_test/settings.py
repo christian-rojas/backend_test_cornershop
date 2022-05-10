@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_extensions",
     "backend_test.utils",
-    "food"
+    "food",
+    "nora"
+    # "auth"
 ]
 
 MIDDLEWARE = [
