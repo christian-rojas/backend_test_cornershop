@@ -84,7 +84,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "backend_test.wsgi.application"
 
+LOGIN_REDIRECT_URL = '/nora/login'
 
+# LOGIN_URL = '/nora/login'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
