@@ -6,7 +6,7 @@ class DateInput(forms.DateInput):
 class createForm(forms.ModelForm):
     class Meta:
         model = Food
-        fields = '__all__'
+        fields = ['salad', 'entrance', 'desert']
 
 class createMenuForm(forms.ModelForm):
     class Meta:
