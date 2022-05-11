@@ -12,17 +12,22 @@ from .models import *
 from .forms import *
 
 class listMenu(LoginRequiredMixin, ListView):
-    model = Food
+    model = Menu
     template_name = 'food/list_menu.html'
     # @method_decorator(login_required)
     # def dispatch(self, request, *args, **kwargs):        
     #     return super(listMenu, self).dispatch(request, *args, **kwargs)
 
-class createMenu(LoginRequiredMixin, CreateView):
+class createFoodMenu(LoginRequiredMixin, CreateView):
     model = Food
     form_class = createForm
-    template_name = 'food/create_menu.html'
+    template_name = 'food/create_food.html'
     # succes_url = reverse_lazy('/')
+
+class createMenu(LoginRequiredMixin, CreateView):
+    model = Menu
+    form_class = createMenuForm
+    template_name = 'food/create_menu.html'
 
 class editMenu(LoginRequiredMixin, UpdateView):
     model = Food
