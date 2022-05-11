@@ -26,10 +26,13 @@ def login_request(request):
 			username = form.cleaned_data.get('username')
 			password = form.cleaned_data.get('password')
 			user = authenticate(username=username, password=password)
+			if user.is_superuser:
+				print("is superuser") 
 			if user is not None:
 				login(request, user)
 				messages.info(request, f"You are now logged in as {username}.")
-				return render(request, template_name="nora/base.html")
+				return render(request, template_name="food/list_menu.html")
+				# return redirect('admin')
 			else:
 				messages.error(request,"Invalid username or password.")
 		else:
@@ -40,6 +43,10 @@ def login_request(request):
 @login_required
 def home(request):
     return render(request, 'nora/base.html')
+
+@login_required
+def admin(request):
+    return render(request, 'food/list_menu.html')
 
 @login_required
 def log_out(request):

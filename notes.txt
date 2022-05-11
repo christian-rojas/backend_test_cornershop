@@ -3,3 +3,5 @@ cree el food con las url y views
 
 python3 manage.py makemigrations
 python3 manage.py migrate
+
+python manage.py createsuperuser

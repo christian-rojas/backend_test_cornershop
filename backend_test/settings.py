@@ -84,7 +84,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "backend_test.wsgi.application"
 
-LOGIN_REDIRECT_URL = '/nora/login'
+LOGIN_REDIRECT_URL = '/food'
 
 # LOGIN_URL = '/nora/login'
 # Database
