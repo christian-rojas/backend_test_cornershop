@@ -8,3 +8,5 @@ python manage.py createsuperuser
 
 hare una creacion por url, en dodne se cargara el id del menu
 luego hare un boton para agregar foods
+
+necesito editar de muchos a la vez

@@ -7,11 +7,16 @@
     <title>Food</title>
 </head>
 <body>
-    {% for food in object_list %}
-    <p> {{ food.salad }} </p>
-    <p> {{ food.entrance }} </p>
-    <p> {{ food.desert }} </p>
-    <p> {{ food.menu }} </p>
-    {% endfor %}
+    <div>
+        <!-- {{ forms.as_p }} -->
+        {{ date }}
+        {% for form in forms %}
+        <p> {{ form.salad }} </p>
+        <!-- <p> {{ food.salad }} </p>
+        <p> {{ food.entrance }} </p>
+        <p> {{ food.desert }} </p> -->
+        <!-- <p> {{ food.date }} & {{ food.id }} & {{ food.food.salad }}</p> -->
+        {% endfor %}
+    </div>
 </body>
 </html>

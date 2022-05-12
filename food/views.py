@@ -1,4 +1,5 @@
 from tempfile import template
+from urllib import request
 from django.http import HttpResponse
 from food.models import Food
 from django.contrib.auth.models import User
@@ -10,10 +11,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
 from .models import *
 from .forms import *
+from django.contrib import messages
+from django.db.models import Count
 
-class listMenu(LoginRequiredMixin, ListView):
-    model = Food
-    template_name = 'food/list_menu.html'
+
+def index(request, id):
+    # pubs = Food.objects.select_related('menu')
+    menu =get_object_or_404(Menu, id = id)
+    pubs = Food.objects.filter(menu=menu)
+    # messages.info(request, f"pubs {pubs}.")
+    form = (pubs)
+    return render(request, 'food/list_menu.html', {"forms":form, "date": form[0].menu.date})
+# class listMenu(LoginRequiredMixin, ListView):
+#     model = Menu
+#     template_name = 'food/list_menu.html'
     # @method_decorator(login_required)
     # def dispatch(self, request, *args, **kwargs):        
     #     return super(listMenu, self).dispatch(request, *args, **kwargs)
@@ -51,12 +62,17 @@ def create_food(request, id):
         print(request.POST)
         if form.is_valid():
             menu = get_object_or_404(Menu, id = id)
+           
             food = Food()
             food.salad = form.cleaned_data['salad']
             food.entrance = form.cleaned_data['entrance']
             food.desert = form.cleaned_data['desert']
             food.menu = menu
             food.save()
+
+            menu.food = food
+            menu.save()
+
             return HttpResponseRedirect('/food')
     else:
         form = createForm()
