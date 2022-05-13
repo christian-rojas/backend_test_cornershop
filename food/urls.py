@@ -6,6 +6,9 @@ from .views import *
 
 urlpatterns = [
     url(r'^/(?P<id>\d+)$', index, name='index'),
+
+    # url(r'^/(?P<pk>\d+)/food/(?P<id>\d+)$', editFood, name='index'),
+    url(r'^/(?P<pk>\d+)/food/edit/(?P<id>\d+)$', editFood, name="update"),
     # url(r'^/create', createMenu.as_view(), name="create")
     # url('/create', createMenu.as_view(model = Menu, success_url="/food/meals"), name="create"),
     # url('/meals', createFoodMenu.as_view(model = Food, success_url="/meals"), name="food"),

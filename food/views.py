@@ -13,6 +13,7 @@ from .models import *
 from .forms import *
 from django.contrib import messages
 from django.db.models import Count
+from django.shortcuts import redirect
 
 
 def index(request, id):
@@ -21,7 +22,7 @@ def index(request, id):
     pubs = Food.objects.filter(menu=menu)
     # messages.info(request, f"pubs {pubs}.")
     form = (pubs)
-    return render(request, 'food/list_menu.html', {"forms":form, "date": form[0].menu.date})
+    return render(request, 'food/list_menu.html', {"forms":form, "date": form[0].menu.date, "id": form[0].menu.id})
 # class listMenu(LoginRequiredMixin, ListView):
 #     model = Menu
 #     template_name = 'food/list_menu.html'
@@ -44,6 +45,26 @@ class editMenu(LoginRequiredMixin, UpdateView):
     model = Food
     form_class = createForm
     template_name = 'food/create_menu.html'
+
+def editFood(request, id, pk):
+    if request.method == 'POST':
+        form = createForm(request.POST)
+        print(request.POST)
+        if form.is_valid():
+            food = get_object_or_404(Food, id = id)
+            food.salad = form.cleaned_data['salad']
+            food.entrance = form.cleaned_data['entrance']
+            food.desert = form.cleaned_data['desert']
+            food.save()
+            #TODO: pasarle el id a la url
+            return HttpResponseRedirect('/food/' + pk)
+    else:
+        form = get_object_or_404(Food, id = id)
+        # food = get_object_or_404(Food, id = id)
+        # print(food.salad)
+        # form = food
+
+    return render(request, 'food/create_foo.html', {'form': form})
 
     # succes_url = reverse_lazy('/')
 def delete_view(request, id):

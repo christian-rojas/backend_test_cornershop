@@ -14,10 +14,10 @@
             {% csrf_token %}
             Crear food
             <!-- {{ form.as_p }} -->
-            <input type="text" name="salad" placeholder="salad"/>
-            <input type="text" name="entrance" placeholder="entrance"/>
-            <input type="text" name="desert" placeholder="desert" />
-            <!-- <input type="hidden" name="menu" value="desert" /> -->
+            <input type="text" name="salad" placeholder="salad" value="{{ form.salad }}"/>
+            <input type="text" name="entrance" placeholder="entrance" value="{{ form.entrance }}"/>
+            <input type="text" name="desert" placeholder="desert" value="{{ form.desert }}"/>
+            <!-- <input type="hidden" name="urll" value="{{ request.path }}" /> -->
             <button type="submit">Crear</button>
             <a href="/">Cancel </a>
         </form>
