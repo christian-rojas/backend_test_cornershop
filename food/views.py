@@ -14,13 +14,20 @@ from .forms import *
 from django.contrib import messages
 from django.db.models import Count
 from django.shortcuts import redirect
+# from slack.views import send
+from django_slack import slack_message
 
 
 def index(request, id):
     # pubs = Food.objects.select_related('menu')
+    if request.method == 'POST':
+        print("ksadkjasjd")
+        resp = slack_message('slack/message.html', {"foo": "Hola Mundo"})
+        print(resp)
+        return HttpResponseRedirect('/food/' + id)
+    # messages.info(request, f"pubs {pubs}.")
     menu =get_object_or_404(Menu, id = id)
     pubs = Food.objects.filter(menu=menu)
-    # messages.info(request, f"pubs {pubs}.")
     form = (pubs)
     return render(request, 'food/list_menu.html', {"forms":form, "date": form[0].menu.date, "id": form[0].menu.id})
 # class listMenu(LoginRequiredMixin, ListView):

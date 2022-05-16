@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     "django_extensions",
     "backend_test.utils",
     "food",
-    "nora"
+    "nora",
+    "django_slack"
     # "auth"
 ]
 
@@ -66,6 +67,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "backend_test.urls"
 
+SLACK_CHANNEL="backend"
+
+SLACK_CLIENT_ID="3552527527040.3541820590865"
+SLACK_CLIENT_SECRET="f03b02220b528d4b5cd35957153f354a"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -77,6 +83,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # "django.template.loaders.app_directories.Loader"
             ],
         },
     },
@@ -89,6 +96,8 @@ LOGIN_REDIRECT_URL = '/food'
 # LOGIN_URL = '/nora/login'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
+SLACK_TOKEN="xapp-1-A03FXQ4HCRF-3522554847574-34f5ab4768e0b596ef3a1593db57343ca2757d829f48db5ce337dfffea7f42d6"
 
 DATABASES = {
     "default": {
