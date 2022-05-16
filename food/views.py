@@ -14,16 +14,31 @@ from .forms import *
 from django.contrib import messages
 from django.db.models import Count
 from django.shortcuts import redirect
+from django.conf import settings
 # from slack.views import send
-from django_slack import slack_message
+import os
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
+
+SLACK_TOKEN = getattr(settings, 'SLACK_TOKEN', None)
+
+client = WebClient(SLACK_TOKEN)
 
 
 def index(request, id):
+    print(SLACK_TOKEN)
     # pubs = Food.objects.select_related('menu')
     if request.method == 'POST':
         print("ksadkjasjd")
-        resp = slack_message('slack/message.html', {"foo": "Hola Mundo"})
-        print(resp)
+        try:
+            response = client.chat_postMessage(channel='#backend', text="Hello world!")
+            print(response)
+            assert response["message"]["text"] == "Hello world!"
+        except SlackApiError as e:
+            # You will get a SlackApiError if "ok" is False
+            assert e.response["ok"] is False
+            assert e.response["error"]  # str like 'invalid_auth', 'channel_not_found'
+            print(f"Got an error: {e.response['error']}")
         return HttpResponseRedirect('/food/' + id)
     # messages.info(request, f"pubs {pubs}.")
     menu =get_object_or_404(Menu, id = id)

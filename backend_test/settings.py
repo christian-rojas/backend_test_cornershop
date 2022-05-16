@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     "backend_test.utils",
     "food",
     "nora",
-    "django_slack"
     # "auth"
 ]
 
@@ -97,7 +96,8 @@ LOGIN_REDIRECT_URL = '/food'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-SLACK_TOKEN="xapp-1-A03FXQ4HCRF-3522554847574-34f5ab4768e0b596ef3a1593db57343ca2757d829f48db5ce337dfffea7f42d6"
+# SLACK_TOKEN="xapp-1-A03FXQ4HCRF-3522554847574-34f5ab4768e0b596ef3a1593db57343ca2757d829f48db5ce337dfffea7f42d6"
+SLACK_TOKEN="xoxb-3552527527040-3526276886085-WCEpVcsG8ZlDBjFzG0Ip6j2F"
 
 DATABASES = {
     "default": {

@@ -12,3 +12,5 @@ luego hare un boton para agregar foods
 necesito editar de muchos a la vez (maybe no)
 
 TODO: envair 
+
+OAuth Tokens for Your Workspace: este es el token que sirve dentro de la app
