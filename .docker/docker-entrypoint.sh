@@ -44,7 +44,7 @@ elif [[ "${1}" == "celery" ]]; then
     CONCURRENCY="${CONCURRENCY:-1}"
     MAX_TASKS="${MAX_TASKS:-1000}"
 
-    exec celery -A $APP -l $LOG_LEVEL -c $CONCURRENCY --maxtasksperchild=$MAX_TASKS worker -B -Q $QUEUES
+    exec celery -A $APP -l $LOG_LEVEL -c $CONCURRENCY --maxtasksperchild=$MAX_TASKS worker -B beat -Q $QUEUES
 
 else
     

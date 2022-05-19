@@ -9,16 +9,13 @@
 <body>
     <div>
         <!-- {{ forms.as_p }} -->
+        <p>Menu of the day: {{ date }}</p>
         {% for form in forms %}
         
-        <p>{{ form.date }}</p>
-        <a href="/food/{{ form.id }}">editar</a>
-        
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="menu_id" value="{{ form.id }}">
-            <button type="submit">Send menu to employees</button>
-        </form>
+        <p> {{ form.salad }} </p> 
+        <p> {{ form.entrance }} </p> 
+        <p> {{ form.desert }} </p> 
+        <a href="/food/edit/{{ form.id }}">editar</a>
         {% endfor %}
     </div>
 </body>

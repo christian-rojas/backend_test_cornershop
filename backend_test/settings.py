@@ -14,10 +14,6 @@ import os
 
 from .envtools import getenv
 
-from celery.schedules import crontab
-
-from datetime import timedelta
-
 # import sentry_sdk
 # from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -67,19 +63,23 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "backend_test.middleware.HeaderNoCacheMiddleware",
+    # "food.middleware.noraMiddleware"
+    "food.middleware.noraMiddleware",
 ]
 
 ROOT_URLCONF = "backend_test.urls"
 
-SLACK_CHANNEL="backend"
+SLACK_CHANNEL = "backend"
 
-SLACK_CLIENT_ID="3552527527040.3541820590865"
-SLACK_CLIENT_SECRET="f03b02220b528d4b5cd35957153f354a"
+SLACK_CLIENT_ID = "3552527527040.3541820590865"
+SLACK_CLIENT_SECRET = "f03b02220b528d4b5cd35957153f354a"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'templates'),],
+        "DIRS": [
+            os.path.join(BASE_DIR, "templates"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -95,15 +95,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "backend_test.wsgi.application"
 
-LOGIN_REDIRECT_URL = '/food'
+LOGIN_REDIRECT_URL = "/food"
 
-# LOGIN_URL = '/nora/login'
+LOGIN_URL = "/nora/login"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 # SLACK_TOKEN="xapp-1-A03FXQ4HCRF-3522554847574-34f5ab4768e0b596ef3a1593db57343ca2757d829f48db5ce337dfffea7f42d6"
 # SLACK_TOKEN="xoxb-3552527527040-3526276886085-WCEpVcsG8ZlDBjFzG0Ip6j2F"
-SLACK_TOKEN="xoxb-3552527527040-3526276886085-WCEpVcsG8ZlDBjFzG0Ip6j2F"
+SLACK_TOKEN = "xoxb-3552527527040-3526276886085-WCEpVcsG8ZlDBjFzG0Ip6j2F"
 
 DATABASES = {
     "default": {
@@ -168,12 +168,12 @@ USE_TZ = True
 #         'schedule': timedelta(seconds=10)
 #     },
 # }
-CELERY_BEAT_SCHEDULE = {
-   'reset_user_flag_test': {
-      'task': 'backend_test.tasks.send',
-      'schedule': timedelta(seconds=5),
-  },
-}
+# CELERY_BEAT_SCHEDULE = {
+#     "reset_user_flag_test": {
+#         "task": "backend_test.tasks.send",
+#         "schedule": timedelta(seconds=5),
+#     },
+# }
 
 
 # Static files (CSS, JavaScript, Images)

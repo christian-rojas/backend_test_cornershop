@@ -12,7 +12,7 @@
         <form method="POST">
             <!-- Security token by Django -->
             {% csrf_token %}
-            Crear food
+            <p>create food</p>
             <!-- {{ form.as_p }} -->
             <input type="text" name="salad" placeholder="salad" value="{{ form.salad }}"/>
             <input type="text" name="entrance" placeholder="entrance" value="{{ form.entrance }}"/>

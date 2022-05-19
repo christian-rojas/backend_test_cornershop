@@ -1,14 +1,13 @@
 import os
+from datetime import timedelta
 
 from celery import Celery
+from celery.utils.log import get_task_logger
 
 from .envtools import getenv
-from celery.schedules import crontab
-from datetime import timedelta
-from celery.utils.log import get_task_logger
-from django.conf import settings
 
 logger = get_task_logger(__name__)
+
 
 class CelerySettings:
     # Settings for version 4.3.0
@@ -73,7 +72,7 @@ settingsz = CelerySettings()
 
 app = Celery("backend_test")
 
-app.config_from_object(settingsz, namespace='CELERY')
+app.config_from_object(settingsz, namespace="CELERY")
 # 'django.conf:settings', namespace='CELERY'
 # app.config_from_object('django.conf:settings')
 app.autodiscover_tasks()
@@ -85,9 +84,9 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     # Executes every Monday morning at 7:30 A.M
-    'mi-task': {
-        'task': 'send',
-        'schedule': timedelta(seconds=5),
+    "mi-task": {
+        "task": "send",
+        "schedule": timedelta(seconds=5),
         # 'schedule': timedelta(seconds=5)
     },
 }
@@ -96,5 +95,3 @@ app.conf.beat_schedule = {
 # @app.task(name='send')
 # def sendSlackMessage(self):
 #     logger.info('Adding {}'.format(self.request))
-
-
