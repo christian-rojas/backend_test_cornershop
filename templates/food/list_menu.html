@@ -13,16 +13,17 @@
         {% for form in forms %}
         <p> {{ form.salad }} </p> 
         <a href="/food/{{ id }}/food/edit/{{ form.id }}">editar</a>
+        
+        <!-- <p> {{ food.salad }} </p>
+            <p> {{ food.entrance }} </p>
+            <p> {{ food.desert }} </p> -->
+            <!-- <p> {{ food.date }} & {{ food.id }} & {{ food.food.salad }}</p> -->
+        {% endfor %}
         <form action="" method="POST">
             {% csrf_token %}
+            
             <button type="submit">Enviar</button>
         </form>
-
-        <!-- <p> {{ food.salad }} </p>
-        <p> {{ food.entrance }} </p>
-        <p> {{ food.desert }} </p> -->
-        <!-- <p> {{ food.date }} & {{ food.id }} & {{ food.food.salad }}</p> -->
-        {% endfor %}
     </div>
 </body>
 </html>

@@ -1,4 +1,5 @@
 from tempfile import template
+from time import clock_getres
 from urllib import request
 from django.http import HttpResponse
 from food.models import Food
@@ -16,24 +17,81 @@ from django.db.models import Count
 from django.shortcuts import redirect
 from django.conf import settings
 # from slack.views import send
-import os
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
+from django.contrib.sites.shortcuts import get_current_site
+from .tasks import sendSlackMessage
 
 SLACK_TOKEN = getattr(settings, 'SLACK_TOKEN', None)
 
+# slac = "xoxb-3552527527040-3539047250323-PXoe9s14XdR1bc7Q8pRlIZkV"
 client = WebClient(SLACK_TOKEN)
 
 
 def index(request, id):
-    print(SLACK_TOKEN)
+    current_site = get_current_site(request)
+    menu = get_object_or_404(Menu, id=id)
+
+    order = Order.objects.get(id=1)
+    print(order.comments)
+
+    # menus = Menu.objects.all()
+    # print("fecha: " + str(len(menus)))
+    # user = UserSession.objects.all()
+    # print(user)
+    # user = User.objects.get(id=2)
+    # userSession = UserSession.objects.get(user=user)
+    # requesto = client.api_call("users.list")
+    # if requesto['ok']:
+    #     for item in requesto['members']:
+    #         if item['is_owner']:
+    #             user_id = item['id']
+
+    # user_channel = client.conversations_open(users=user_id, return_im=True)
+    # print(user_channel)
+    
+    # print(current_site.name)
     # pubs = Food.objects.select_related('menu')
     if request.method == 'POST':
-        print("ksadkjasjd")
         try:
-            response = client.chat_postMessage(channel='#backend', text="Hello world!")
-            print(response)
-            assert response["message"]["text"] == "Hello world!"
+            sendSlackMessage(menu, current_site)
+            # u = UserSession()
+            # u.user = user
+            # u.menu = menu
+            # u.save()
+            # response = client.chat_postMessage(channel='#backend', text="<http://'current_site'> \n :meat_on_bone: \n Choose your meal!")
+            # response = client.chat_postMessage(channel="@{}".format(user_id), blocks=[
+            #     {
+            #     "type": "section",
+            #         "text": {
+            #             "type": "mrkdwn",
+            #             "text": "Hello! \n I share with you today's menu :meat_on_bone:"
+            #         }
+            #     },
+            #     {
+            #     "type": "section",
+            #         "text": {
+            #             "type": "mrkdwn",
+            #             "text": "<http://{}/food/menu/{}|Elegir> \n".format(current_site, u.uuid)
+            #         },
+            #     },
+            # ])
+            
+
+            # isCreated = Order.objects.create(menu=menu, session=user)
+            # print(isCreated)
+
+
+            # response = client.conversations_open(users=user_id)
+            # client.chat_postMessage(channel=response['channel']['id'], text="hola")
+            # token="xoxb-3552527527040-3526276886085-WCEpVcsG8ZlDBjFzG0Ip6j2F",
+            # print(user_id)
+            # response = client.conversations_open(users=user_id)
+            # response = client.chat_postMessage(channel="@{}".format(user_id), text="noooo")
+
+            
+            # print(response)
+            # assert response["message"]["text"] == "Hello world!"
         except SlackApiError as e:
             # You will get a SlackApiError if "ok" is False
             assert e.response["ok"] is False
@@ -41,8 +99,9 @@ def index(request, id):
             print(f"Got an error: {e.response['error']}")
         return HttpResponseRedirect('/food/' + id)
     # messages.info(request, f"pubs {pubs}.")
-    menu =get_object_or_404(Menu, id = id)
+    
     pubs = Food.objects.filter(menu=menu)
+    # print(menu.uuid)
     form = (pubs)
     return render(request, 'food/list_menu.html', {"forms":form, "date": form[0].menu.date, "id": form[0].menu.id})
 # class listMenu(LoginRequiredMixin, ListView):
@@ -134,3 +193,36 @@ def createMeals(request):
         form = createMenuForm()
 
     return render(request, 'food/create_meal.html', {form: form})
+
+def choose(request, uuid):
+    # userSession = get_object_or_404(UserSession, uuid = uuid)
+    session = UserSession.objects.get(uuid=uuid)
+    pubs = Food.objects.filter(menu=session.menu)
+    form = orderForm(request.POST)
+
+    now = datetime.now().hour
+    # current_time = now.strftime("%H:%M:%S")
+    print("Current Time =", now)
+
+    if now >= 8:
+        return render(request, 'menu/late.html')
+
+    if request.method == 'POST' and form.is_valid():
+        now = datetime.now().hour
+        if now >= 8:
+            return render(request, 'menu/late.html')
+        food = get_object_or_404(Food, id = request.POST["id"])
+        order = Order()
+        order.food = food
+        order.session = session
+        order.comments = form.cleaned_data['comments']
+        order.save()
+        #TODO: logica de insercion en orders
+        return HttpResponseRedirect('/food')
+
+    # print(menu.uuid)
+    form = (pubs)
+    return render(request, 'menu/choose.html', {"forms": form})
+
+# necesito mandar un uuid, podria ser un modelo con el user_id, el menu_id y el uuid, comments, food_id
+# y cuando el user responda lleno lo demas

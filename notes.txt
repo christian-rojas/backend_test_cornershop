@@ -6,11 +6,11 @@ python3 manage.py migrate
 
 python manage.py createsuperuser
 
-hare una creacion por url, en dodne se cargara el id del menu
+hare una creacion por url, en donde se cargara el id del menu
 luego hare un boton para agregar foods
 
 necesito editar de muchos a la vez (maybe no)
 
-TODO: envair 
-
 OAuth Tokens for Your Workspace: este es el token que sirve dentro de la app
+
+crear modelo con user_id y uuid

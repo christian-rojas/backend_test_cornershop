@@ -14,6 +14,10 @@ import os
 
 from .envtools import getenv
 
+from celery.schedules import crontab
+
+from datetime import timedelta
+
 # import sentry_sdk
 # from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -47,6 +51,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_extensions",
     "backend_test.utils",
+    "backend_test",
     "food",
     "nora",
     # "auth"
@@ -97,6 +102,7 @@ LOGIN_REDIRECT_URL = '/food'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 # SLACK_TOKEN="xapp-1-A03FXQ4HCRF-3522554847574-34f5ab4768e0b596ef3a1593db57343ca2757d829f48db5ce337dfffea7f42d6"
+# SLACK_TOKEN="xoxb-3552527527040-3526276886085-WCEpVcsG8ZlDBjFzG0Ip6j2F"
 SLACK_TOKEN="xoxb-3552527527040-3526276886085-WCEpVcsG8ZlDBjFzG0Ip6j2F"
 
 DATABASES = {
@@ -153,6 +159,21 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# CELERY_BEAT_SCHEDULE = {
+#     # Executes every Monday morning at 7:30 A.M
+#     'mitask': {
+#         'task': 'backend_test.tasks.send',
+#         # 'schedule': crontab(hour=3, minute=1, day_of_week=3),
+#         'schedule': timedelta(seconds=10)
+#     },
+# }
+CELERY_BEAT_SCHEDULE = {
+   'reset_user_flag_test': {
+      'task': 'backend_test.tasks.send',
+      'schedule': timedelta(seconds=5),
+  },
+}
 
 
 # Static files (CSS, JavaScript, Images)

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose your meal</title>
+</head>
+<body>
+    <div>
+        <!-- {{ forms.as_p }} -->
+        {% for form in forms %}
+        <p> {{ form.salad }} </p>
+        <!-- <a href="/food/{{ id }}/food/edit/{{ form.id }}">editar</a> -->
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="comments" placeholder="agrega comentarios">
+            <input type="hidden" value="{{ form.id }}" name="id">
+            <button type="submit">Elegir</button>
+        </form>
+
+        <!-- <p> {{ food.salad }} </p>
+        <p> {{ food.entrance }} </p>
+        <p> {{ food.desert }} </p> -->
+        <!-- <p> {{ food.date }} & {{ food.id }} & {{ food.food.salad }}</p> -->
+        {% endfor %}
+    </div>
+</body>
+</html>

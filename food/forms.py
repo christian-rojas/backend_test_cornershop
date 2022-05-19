@@ -17,3 +17,10 @@ class createMenuForm(forms.ModelForm):
         widgets = {
             'date': DateInput(),
         }
+
+class orderForm(forms.Form):
+    class Meta:
+        model = Order
+        fields = ['food', 'comments']
+    # id = forms.IntegerField()
+    # comments = forms.CharField(max_length=100, help_text='100 characters max.')

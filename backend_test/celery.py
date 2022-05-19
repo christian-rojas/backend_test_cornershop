@@ -3,7 +3,12 @@ import os
 from celery import Celery
 
 from .envtools import getenv
+from celery.schedules import crontab
+from datetime import timedelta
+from celery.utils.log import get_task_logger
+from django.conf import settings
 
+logger = get_task_logger(__name__)
 
 class CelerySettings:
     # Settings for version 4.3.0
@@ -21,7 +26,7 @@ class CelerySettings:
     CELERY_TASK_SERIALIZER = "json"
     # Task execution settings
     # https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#task-execution-settings
-    CELERY_ALWAYS_EAGER = True
+    CELERY_ALWAYS_EAGER = False
     CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
     CELERY_IGNORE_RESULT = getenv("CELERY_IGNORE_RESULT", default="True", coalesce=bool)
     CELERY_STORE_ERRORS_EVEN_IF_IGNORED = True
@@ -34,6 +39,7 @@ class CelerySettings:
     CELERY_RESULT_BACKEND = getenv(
         "CELERY_RESULT_BACKEND_URL", default="redis://redis:6379/3"
     )
+    CELERY_TASK_TRACK_STARTED = True
     CELERY_RESULT_SERIALIZER = "json"
     CELERY_TASK_RESULT_EXPIRES = 60 * 60 * 24
     # Message Routing
@@ -44,7 +50,7 @@ class CelerySettings:
     CELERY_DEFAULT_ROUTING_KEY = CELERY_DEFAULT_QUEUE
     # Message Routing
     # https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#broker-url
-    BROKER_URL = getenv("CELERY_BROKER_URL", default="redis://redis:6379/2")
+    CELERY_BROKER_URL = getenv("CELERY_BROKER_URL", default="redis://redis:6379/2")
     BROKER_POOL_LIMIT = 10  # default is 10
     BROKER_CONNECTION_MAX_RETRIES = 0  # default is 100
     BROKER_HEARTBEAT = None
@@ -63,8 +69,32 @@ class CelerySettings:
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend_test.settings")
 
-settings = CelerySettings()
+settingsz = CelerySettings()
 
 app = Celery("backend_test")
-app.config_from_object(settings)
+
+app.config_from_object(settingsz, namespace='CELERY')
+# 'django.conf:settings', namespace='CELERY'
+# app.config_from_object('django.conf:settings')
 app.autodiscover_tasks()
+
+# @app.task(bind=True)
+# def send(self):
+#     logger.info('Adding')
+#     print('Request: {0!r}'.format(self.request))
+
+app.conf.beat_schedule = {
+    # Executes every Monday morning at 7:30 A.M
+    'mi-task': {
+        'task': 'send',
+        'schedule': timedelta(seconds=5),
+        # 'schedule': timedelta(seconds=5)
+    },
+}
+
+
+# @app.task(name='send')
+# def sendSlackMessage(self):
+#     logger.info('Adding {}'.format(self.request))
+
+

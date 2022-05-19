@@ -9,6 +9,8 @@ urlpatterns = [
 
     # url(r'^/(?P<pk>\d+)/food/(?P<id>\d+)$', editFood, name='index'),
     url(r'^/(?P<pk>\d+)/food/edit/(?P<id>\d+)$', editFood, name="update"),
+
+    url(r'^/menu/(?P<uuid>[0-9a-f-]+)', choose, name="choose"),
     # url(r'^/create', createMenu.as_view(), name="create")
     # url('/create', createMenu.as_view(model = Menu, success_url="/food/meals"), name="create"),
     # url('/meals', createFoodMenu.as_view(model = Food, success_url="/meals"), name="food"),

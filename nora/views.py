@@ -4,20 +4,22 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from food.models import UserSession
+import json
 
 def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return render(request, template_name="nora/base.html")
-    else:
-        form = UserCreationForm()
-    return render(request, 'nora/signup.html', {'form': form})
+	if request.method == 'POST':
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = form.cleaned_data.get('username')
+			raw_password = form.cleaned_data.get('password1')
+			user = authenticate(username=username, password=raw_password)
+			login(request, user)
+			return render(request, template_name="nora/base.html")
+	else:
+		form=UserCreationForm()
+	return render(request, 'nora/signup.html', {'form': form})
 
 def login_request(request):
 	if request.method == "POST":
@@ -26,6 +28,8 @@ def login_request(request):
 			username = form.cleaned_data.get('username')
 			password = form.cleaned_data.get('password')
 			user = authenticate(username=username, password=password)
+			# userSession = UserSession.objects.select_related().get(user=user)
+			# print(userSession.user.id)
 			if user.is_superuser:
 				print("is superuser") 
 			if user is not None:
