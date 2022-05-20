@@ -35,8 +35,9 @@ def login_request(request):
             password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
             login(request, user)
-            print(user.is_authenticated)
             if user.is_superuser:
+                # just a little freeze variable
+                request.method = "GET"
                 return admin(request)
             if user is not None:
                 login(request, user)

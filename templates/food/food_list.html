@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food</title>
+    <title>Food List</title>
 </head>
 <body>
     <div>
@@ -15,8 +15,10 @@
         <p> {{ form.salad }} </p> 
         <p> {{ form.entrance }} </p> 
         <p> {{ form.desert }} </p> 
-        <a href="/food/edit/{{ form.id }}">editar</a>
+        <a href="/food/edit/{{ form.id }}">edit</a>
         {% endfor %}
+        <hr>
+        <a href="/food/create/{{ id }}">add new food</a>
     </div>
 </body>
 </html>

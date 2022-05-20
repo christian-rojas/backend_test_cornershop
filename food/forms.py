@@ -1,6 +1,6 @@
 from django import forms
 
-from models import Food, Menu, Order
+from .models import Food, Menu, Order
 
 
 class DateInput(forms.DateInput):

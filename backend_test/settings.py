@@ -63,7 +63,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "backend_test.middleware.HeaderNoCacheMiddleware",
-    # "food.middleware.noraMiddleware"
     "food.middleware.noraMiddleware",
 ]
 
@@ -101,8 +100,6 @@ LOGIN_URL = "/nora/login"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# SLACK_TOKEN="xapp-1-A03FXQ4HCRF-3522554847574-34f5ab4768e0b596ef3a1593db57343ca2757d829f48db5ce337dfffea7f42d6"
-# SLACK_TOKEN="xoxb-3552527527040-3526276886085-WCEpVcsG8ZlDBjFzG0Ip6j2F"
 SLACK_TOKEN = "xoxb-3552527527040-3526276886085-WCEpVcsG8ZlDBjFzG0Ip6j2F"
 
 DATABASES = {

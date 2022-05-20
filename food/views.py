@@ -8,16 +8,16 @@ from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
 
-from forms import createForm, createMenuForm, orderForm
-from models import Food, Menu, Order, UserSession
 from slack_sdk.errors import SlackApiError
-from tasks import sendSlackMessage
+
+from .forms import createForm, createMenuForm, orderForm
+from .models import Food, Menu, Order, UserSession
+from .tasks import sendSlackMessage
 
 
 @login_required
 def index(request, id):
     current_site = get_current_site(request)
-    # order = Order.objects.get(id=1)
     if request.method == "POST":
         try:
             sendSlackMessage.delay(id, str(current_site))
@@ -40,13 +40,6 @@ def index(request, id):
     )
 
 
-class createFoodMenu(LoginRequiredMixin, CreateView):
-    model = Food
-    form_class = createForm
-    template_name = "food/create_food.html"
-    # succes_url = reverse_lazy('/')
-
-
 class createMenu(LoginRequiredMixin, CreateView):
     model = Menu
     form_class = createMenuForm
@@ -60,7 +53,8 @@ class editMenu(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         pk = self.kwargs["pk"]
-        return reverse("index", kwargs={"id": pk})
+        food = Food.objects.get(id=pk)
+        return reverse("index", kwargs={"id": food.menu.id})
 
 
 def delete_view(request, id):
@@ -68,14 +62,13 @@ def delete_view(request, id):
     obj = get_object_or_404(Food, id=id)
     if request.method == "POST":
         obj.delete()
-        return HttpResponseRedirect("/food")
+        return HttpResponseRedirect("/food/" + id)
     return render(request, "food/delete_menu.html", context)
 
 
 def create_food(request, id):
     if request.method == "POST":
         form = createForm(request.POST)
-        print(request.POST)
         if form.is_valid():
             menu = get_object_or_404(Menu, id=id)
             food = Food()
@@ -84,10 +77,7 @@ def create_food(request, id):
             food.desert = form.cleaned_data["desert"]
             food.menu = menu
             food.save()
-            menu.food = food
-            menu.save()
-
-            return HttpResponseRedirect("/food")
+            return HttpResponseRedirect("/food/" + id)
     else:
         form = createForm()
     return render(request, "food/create.html", {form: form})
@@ -122,11 +112,11 @@ def choose(request, uuid):
     currentTime = datetime.now()
     currentHour = currentTime.hour
 
-    if currentHour >= 22:
+    if currentHour >= 6:
         return render(request, "menu/late.html")
 
     if request.method == "POST" and form.is_valid():
-        if currentHour >= 22:
+        if currentHour >= 6:
             return render(request, "menu/late.html")
         food = get_object_or_404(Food, id=request.POST["id"])
         order = Order()

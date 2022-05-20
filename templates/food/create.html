@@ -4,21 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Food creation</title>
 </head>
 <body>
     <div class="main">
-        <!-- Create a Form -->
         <form method="POST">
-            <!-- Security token by Django -->
             {% csrf_token %}
             <p>create food</p>
             <!-- {{ form.as_p }} -->
             <input type="text" name="salad" placeholder="salad" value="{{ form.salad }}"/>
             <input type="text" name="entrance" placeholder="entrance" value="{{ form.entrance }}"/>
             <input type="text" name="desert" placeholder="desert" value="{{ form.desert }}"/>
-            <!-- <input type="hidden" name="urll" value="{{ request.path }}" /> -->
-            <button type="submit">Crear</button>
+            <button type="submit">Create</button>
             <a href="/">Cancel </a>
         </form>
     </div>

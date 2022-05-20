@@ -10,19 +10,20 @@
     <div>
         <!-- {{ forms.as_p }} -->
         {% for form in forms %}
+        <h4>Option {{ forloop.counter }}</h4>
         <p> {{ form.salad }} </p>
-        <!-- <a href="/food/{{ id }}/food/edit/{{ form.id }}">editar</a> -->
+        <p> {{ form.entrance }} </p>
+        <p> {{ form.desert }} </p>
+        <br>
         <form method="POST">
             {% csrf_token %}
             <input type="text" name="comments" placeholder="agrega comentarios">
             <input type="hidden" value="{{ form.id }}" name="id">
-            <button type="submit">Elegir</button>
+            <br>
+            <button type="submit">Choose</button>
         </form>
+        <br>
 
-        <!-- <p> {{ food.salad }} </p>
-        <p> {{ food.entrance }} </p>
-        <p> {{ food.desert }} </p> -->
-        <!-- <p> {{ food.date }} & {{ food.id }} & {{ food.food.salad }}</p> -->
         {% endfor %}
     </div>
 </body>
