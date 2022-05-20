@@ -16,7 +16,6 @@ client = WebClient(SLACK_TOKEN)
 
 @app.task(name="send_message")
 def sendSlackMessage(id, url):
-    # la fecha debe coincidir con hoy (para el menu)
     menu = Menu.objects.get(id=id)
 
     if menu.date < datetime.now():
@@ -48,7 +47,7 @@ def sendSlackMessage(id, url):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "Hello! \n I share with you today's menu :meat_on_bone:",
+                        "text": "Hello! \n I share with you today's menu :meat_on_bone: Have a nice day!",
                     },
                 },
                 {
