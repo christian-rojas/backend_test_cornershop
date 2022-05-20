@@ -104,7 +104,7 @@ def choose(request, uuid):
         Order.objects.get(session=session)
         return render(request, "menu/error.html")
     except Order.DoesNotExist:
-        print("no existe")
+        print("does not exists")
 
     pubs = Food.objects.filter(menu=session.menu)
     form = orderForm(request.POST)
@@ -112,11 +112,14 @@ def choose(request, uuid):
     currentTime = datetime.now()
     currentHour = currentTime.hour
 
-    if currentHour >= 6:
+    if currentHour >= 11:
         return render(request, "menu/late.html")
 
     if request.method == "POST" and form.is_valid():
-        if currentHour >= 6:
+        # handle users previously on page before 11, but take action after this hour
+        currentTime = datetime.now()
+        currentHour = currentTime.hour
+        if currentHour >= 11:
             return render(request, "menu/late.html")
         food = get_object_or_404(Food, id=request.POST["id"])
         order = Order()
